@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nerdl</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Nerdl</h1>
+      <p class="subtitle">Don't solve the word — use as many guesses as possible!</p>
+      <button id="new-game-btn" class="btn-new">New Game</button>
+    </header>
+
+    <div id="message" class="message" aria-live="polite"></div>
+
+    <div id="score-bar">
+      Guesses: <span id="guess-count">0</span>
+    </div>
+
+    <div id="info-panel">
+      <div class="info-row">
+        <span class="info-label">Required&nbsp;letters</span>
+        <span id="required-letters" class="info-value">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Available&nbsp;letters</span>
+        <span id="available-letters" class="info-value">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</span>
+      </div>
+    </div>
+
+    <div id="board-wrapper">
+      <div id="board"></div>
+    </div>
+
+    <div id="keyboard"></div>
+
+    <div id="input-area">
+      <input
+        id="guess-input"
+        type="text"
+        maxlength="5"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+        placeholder="5-letter word…"
+        aria-label="Your guess"
+      />
+      <button id="submit-btn" class="btn-submit">Guess</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
