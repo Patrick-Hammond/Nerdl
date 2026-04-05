@@ -38,17 +38,17 @@
     <div id="keyboard"></div>
 
     <div id="input-area">
-      <input
-        id="guess-input"
-        type="text"
-        maxlength="5"
-        autocomplete="off"
-        autocorrect="off"
-        spellcheck="false"
-        placeholder="5-letter word…"
-        aria-label="Your guess"
-      />
-      <button id="submit-btn" class="btn-submit">Guess</button>
+      <div id="guess-preview" aria-live="polite" aria-label="Current guess">
+        <span class="preview-tile"></span>
+        <span class="preview-tile"></span>
+        <span class="preview-tile"></span>
+        <span class="preview-tile"></span>
+        <span class="preview-tile"></span>
+      </div>
+      <div class="input-buttons">
+        <button id="backspace-btn" class="btn-secondary" type="button">⌫</button>
+        <button id="submit-btn" class="btn-submit" type="button">Guess</button>
+      </div>
     </div>
   </div>
 

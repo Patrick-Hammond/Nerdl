@@ -26,6 +26,7 @@ let requiredLetters = new Set();
 let guesses = [];
 
 let gameOver = false;
+let currentGuess = '';
 
 // ---------------------------------------------------------------------------
 // Game lifecycle
@@ -36,17 +37,18 @@ function startGame() {
   availableLetters = new Set(ALPHABET);
   requiredLetters = new Set();
   gameOver = false;
+  currentGuess = '';
 
-  const input = document.getElementById('guess-input');
   const submitBtn = document.getElementById('submit-btn');
-  input.value = '';
-  input.disabled = false;
+  const backspaceBtn = document.getElementById('backspace-btn');
   submitBtn.disabled = false;
+  backspaceBtn.disabled = false;
 
   document.getElementById('guess-count').textContent = '0';
   showMessage('');
   renderBoard();
   renderKeyboard();
+  renderGuessPreview();
   updateInfoPanel();
 }
 
@@ -89,8 +91,7 @@ function evaluateGuess(guess, target) {
 function submitGuess() {
   if (gameOver) return;
 
-  const input = document.getElementById('guess-input');
-  const guess = input.value.trim().toUpperCase();
+  const guess = currentGuess.trim().toUpperCase();
 
   // ---- basic validation ----
   if (guess.length !== WORD_LENGTH) {
@@ -146,10 +147,11 @@ function submitGuess() {
   }
 
   // ---- update display ----
-  input.value = '';
+  currentGuess = '';
   document.getElementById('guess-count').textContent = guesses.length;
   renderBoard();
   renderKeyboard();
+  renderGuessPreview();
   updateInfoPanel();
 
   // ---- check end conditions ----
@@ -167,8 +169,8 @@ function submitGuess() {
 // ---------------------------------------------------------------------------
 function endGame(solved) {
   gameOver = true;
-  document.getElementById('guess-input').disabled = true;
   document.getElementById('submit-btn').disabled = true;
+  document.getElementById('backspace-btn').disabled = true;
 
   if (solved) {
     showMessage(
@@ -252,10 +254,9 @@ function renderKeyboard() {
 
       key.addEventListener('click', () => {
         if (gameOver) return;
-        const input = document.getElementById('guess-input');
-        if (input.value.length < WORD_LENGTH) {
-          input.value += letter;
-          input.focus();
+        if (currentGuess.length < WORD_LENGTH) {
+          currentGuess += letter;
+          renderGuessPreview();
         }
       });
 
@@ -263,6 +264,13 @@ function renderKeyboard() {
     }
 
     keyboard.appendChild(rowEl);
+  }
+}
+
+function renderGuessPreview() {
+  const tiles = document.querySelectorAll('#guess-preview .preview-tile');
+  for (let i = 0; i < WORD_LENGTH; i++) {
+    tiles[i].textContent = currentGuess[i] || '';
   }
 }
 
@@ -304,8 +312,10 @@ document.addEventListener('DOMContentLoaded', () => {
   startGame();
 
   document.getElementById('submit-btn').addEventListener('click', submitGuess);
-  document.getElementById('guess-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') submitGuess();
+  document.getElementById('backspace-btn').addEventListener('click', () => {
+    if (gameOver) return;
+    currentGuess = currentGuess.slice(0, -1);
+    renderGuessPreview();
   });
   document.getElementById('new-game-btn').addEventListener('click', startGame);
 });
